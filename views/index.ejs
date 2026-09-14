@@ -9,7 +9,7 @@
 </head>
 
 <body class="flex flex-col min-h-screen bg-black text-white font-extralight">
-    <%- include('header') %>
+    <%- include('header', {user}) %>
         <% if (user) { %>
             <p>Hello</p>
             <% } %>

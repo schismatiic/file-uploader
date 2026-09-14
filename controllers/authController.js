@@ -79,6 +79,9 @@ const handleLogInValidation = (req, res, next) => {
 };
 
 const getSignUp = (req, res) => {
+  if (req.user) {
+    return res.redirect("/");
+  }
   res.render("sign-up", {
     firstName: "",
     lastName: "",
@@ -88,6 +91,9 @@ const getSignUp = (req, res) => {
   });
 };
 const getLogIn = (req, res) => {
+  if (req.user) {
+    return res.redirect("/");
+  }
   res.render("log-in", {
     identifier: "",
     user: req.user,
