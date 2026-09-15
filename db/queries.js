@@ -60,6 +60,18 @@ const getFolders = async () => {
   const folders = await prisma.folders.findMany();
   return folders;
 };
+const getFolderById = async (id) => {
+  const folder = await prisma.folders.findUnique({
+    where: { id },
+  });
+  return folder;
+};
+const updateFolderQuery = async (id, name) => {
+  await prisma.folders.update({
+    where: { id },
+    data: { name },
+  });
+};
 export {
   createSignUpQuery,
   createFolderQuery,
@@ -68,4 +80,6 @@ export {
   getEmail,
   getIdentifier,
   getFolders,
+  getFolderById,
+  updateFolderQuery,
 };
