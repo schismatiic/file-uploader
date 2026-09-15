@@ -42,4 +42,15 @@ const getIdentifier = async (identifier) => {
   });
   return user;
 };
-export { createUser, getUserById, getUsername, getEmail, getIdentifier };
+const getFolders = async () => {
+  const folders = await prisma.folders.findMany();
+  return folders;
+};
+export {
+  createUser,
+  getUserById,
+  getUsername,
+  getEmail,
+  getIdentifier,
+  getFolders,
+};

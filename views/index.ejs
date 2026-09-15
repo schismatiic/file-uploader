@@ -6,14 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Монолит</title>
     <link rel="stylesheet" href="/output.css">
+    <link rel="icon" type="image/svg+xml" href="/icons/pyramid.svg">
 </head>
 
 <body class="flex flex-col min-h-screen bg-black text-white font-extralight">
     <%- include('header', {user}) %>
         <% if (user) { %>
-            <p>Hello</p>
+            <div class="m-4 mt-6 mb-0">
+                <a href="/folder/create"
+                    class="inline-flex gap-2 text-sm items-center bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/95 active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                        class="font-extralight">
+                        <path d="M12 10v6" />
+                        <path d="M9 13h6" />
+                        <path
+                            d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    <p>
+                        New folder
+                    </p>
+                </a>
+            </div>
             <% } %>
                 <main class="flex flex-col flex-1 mt-2">
+                    <div class="p-4 m-4 border border-white/20">
+                        <% if (folders.length!==0) { %>
+                            <ul class="flex flex-col max-h-100 gap-2 overflow-y-auto">
+                                <% folders.forEach(folder=> { %>
+                                    <li>
+                                        <p>Hello</p>
+                                    </li>
+                                    <% }); %>
+
+                            </ul>
+
+                            <% } else {%>
+                                <p class="flex justify-center text-white/80">No folders yet.</p>
+                                <% } %>
+                    </div>
                 </main>
 
                 <%- include('footer') %>

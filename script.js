@@ -4,6 +4,7 @@ import path from "node:path";
 import session from "express-session";
 import indexRouter from "./routes/indexRouter.js";
 import authRouter from "./routes/authRouter.js";
+import folderRouter from "./routes/folderRouter.js";
 import passport from "./passport/passport.js";
 import { prisma } from "./lib/prisma.js";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
 app.use("/auth", authRouter);
+app.use("/folder", folderRouter);
 app.use("/", indexRouter);
 app.use((err, req, res, next) => {
   console.error(err);

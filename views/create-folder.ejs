@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Монолит | Create a folder</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="flex flex-col min-h-screen bg-black text-white font-extralight">
+    <%- include('header', {user}) %>
+
+        <h3 class="flex justify-center items-center gap-2 mt-4 text-2xl">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-folder-plus">
+                <path d="M12 10v6" />
+                <path d="M9 13h6" />
+                <path
+                    d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+            </svg>
+            <p>Create a folder</p>
+        </h3>
+        <main class="flex flex-col flex-1 items-center">
+            <form action="/message/create" method="POST"
+                class="flex flex-col w-full max-w-11/12 md:max-w-5/12 m-4 border border-white/20 p-4 gap-2">
+                <label for="name">
+                    Name
+                </label>
+                <input name="name" id="name" class="border border-white/20  px-4 py-2" type="text"
+                    placeholder="Folder name" value="<%= name || ''  %>" required>
+                <button
+                    class="bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95 mt-4 w-fit text-sm"
+                    type="submit">Create</button>
+            </form>
+            <% if (locals.errors) {%>
+                <ul class="m-4 border border-white/20 p-4 w-fit">
+                    <% errors.forEach(function(error) { %>
+                        <li class="font-bold">
+                            <%= error.msg %>
+                        </li>
+                        <% }); %>
+                </ul>
+                <% } %>
+        </main>
+        <%- include('footer') %>
+
+</body>
+
+</html>

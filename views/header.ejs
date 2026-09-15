@@ -1,21 +1,50 @@
 <header class="flex p-4 justify-between items-center border-b border-white/20">
-    <a href="/" class="active:scale-95">
+    <a href="/" class="inline-flex items-center gap-2 active:scale-95">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-pyramid">
+            <path
+                d="M2.5 16.88a1 1 0 0 1-.32-1.43l9-13.02a1 1 0 0 1 1.64 0l9 13.01a1 1 0 0 1-.32 1.44l-8.51 4.86a2 2 0 0 1-1.98 0Z" />
+            <path d="M12 2v20" />
+        </svg>
         <h1 class="text-2xl font-extralight tracking-[0.35em]">Монолит</h1>
     </a>
     <div class="flex items-center gap-2 text-sm">
         <% if (!user) { %>
             <a href="/auth/log-in"
-                class="text-white border border-white/20 px-4 py-1 cursor-pointer hover:bg-gray-900 active:scale-95">
-                Log In
+                class="inline-flex gap-2 items-center text-white border border-white/20 px-2 py-1 cursor-pointer hover:bg-gray-900 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-log-in">
+                    <path d="m10 17 5-5-5-5" />
+                    <path d="M15 12H3" />
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                </svg>
+                <p>Log In</p>
             </a>
             <a href="/auth/sign-up"
-                class="bg-white border border-white/20 text-black px-4 py-1 cursor-pointer hover:bg-white/90 active:scale-95">
+                class="inline-flex gap-2 items-center bg-white border border-white/20 text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-user-plus">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <line x1="19" x2="19" y1="8" y2="14" />
+                    <line x1="22" x2="16" y1="11" y2="11" />
+                </svg>
                 Sign Up
             </a>
             <% } else { %>
                 <a href="/auth/log-out"
-                    class="bg-white border border-white/20 text-black px-4 py-1 cursor-pointer hover:bg-white/90 active:scale-95">
-                    Log Out
+                    class="inline-flex gap-2 items-center bg-white border border-white/20 text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-log-out">
+                        <path d="m16 17 5-5-5-5" />
+                        <path d="M21 12H9" />
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    </svg>
+                    <p>Log Out</p>
                 </a>
                 <% } %>
     </div>
