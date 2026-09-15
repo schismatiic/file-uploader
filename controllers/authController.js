@@ -1,4 +1,4 @@
-import { createUser, getUsername, getEmail } from "../db/queries.js";
+import { createSignUpQuery, getUsername, getEmail } from "../db/queries.js";
 import passport from "../passport/passport.js";
 import bcrypt from "bcryptjs";
 import { body, validationResult, matchedData } from "express-validator";
@@ -129,7 +129,7 @@ const createSignUp = async (req, res) => {
   }
   const { firstName, lastName, username, email, password } = matchedData(req);
   const hashedPassword = await bcrypt.hash(password, 10);
-  await createUser(firstName, lastName, username, email, hashedPassword);
+  await createSignUpQuery(firstName, lastName, username, email, hashedPassword);
   res.redirect("/");
 };
 

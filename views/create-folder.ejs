@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Монолит | Create a folder</title>
     <link rel="stylesheet" href="/output.css">
+    <link rel="icon" type="image/svg+xml" href="/icons/pyramid.svg">
 </head>
 
 <body class="flex flex-col min-h-screen bg-black text-white font-extralight">
@@ -23,7 +24,7 @@
             <p>Create a folder</p>
         </h3>
         <main class="flex flex-col flex-1 items-center">
-            <form action="/message/create" method="POST"
+            <form action="/folder/create" method="POST"
                 class="flex flex-col w-full max-w-11/12 md:max-w-5/12 m-4 border border-white/20 p-4 gap-2">
                 <label for="name">
                     Name
@@ -31,7 +32,7 @@
                 <input name="name" id="name" class="border border-white/20  px-4 py-2" type="text"
                     placeholder="Folder name" value="<%= name || ''  %>" required>
                 <button
-                    class="bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95 mt-4 w-fit text-sm"
+                    class="bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95 mt-2 w-fit"
                     type="submit">Create</button>
             </form>
             <% if (locals.errors) {%>

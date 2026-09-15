@@ -1,5 +1,11 @@
 import { prisma } from "../lib/prisma.js";
-const createUser = async (firstName, lastName, username, email, password) => {
+const createSignUpQuery = async (
+  firstName,
+  lastName,
+  username,
+  email,
+  password,
+) => {
   await prisma.users.create({
     data: {
       firstName,
@@ -7,6 +13,14 @@ const createUser = async (firstName, lastName, username, email, password) => {
       username,
       email,
       password,
+    },
+  });
+};
+const createFolderQuery = async (name, usersId) => {
+  await prisma.folders.create({
+    data: {
+      name,
+      usersId,
     },
   });
 };
@@ -47,7 +61,8 @@ const getFolders = async () => {
   return folders;
 };
 export {
-  createUser,
+  createSignUpQuery,
+  createFolderQuery,
   getUserById,
   getUsername,
   getEmail,
