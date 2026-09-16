@@ -24,6 +24,9 @@ const validateUpdateFolder = [
     .withMessage(`Name ${lengthErr}`),
 ];
 const createFolder = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
   const { id } = req.user;
   const folder = req.body;
   const errors = validationResult(req);
@@ -45,6 +48,9 @@ const getCreateFolder = (req, res) => {
   res.render("create-folder", { user: req.user, name: "" });
 };
 const getUpdateFolder = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
   const { id } = req.params;
   const folderId = Number(id);
   const folder = await getFolderById(folderId);
@@ -55,6 +61,9 @@ const getUpdateFolder = async (req, res) => {
   });
 };
 const updateFolder = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
   const { id } = req.params;
   const folderId = Number(id);
   const folder = req.body;
@@ -71,6 +80,9 @@ const updateFolder = async (req, res) => {
   res.redirect("/");
 };
 const deleteFolder = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
   const { id } = req.params;
   const folderId = Number(id);
   await deleteFolderQuery(folderId);
