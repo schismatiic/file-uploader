@@ -1,5 +1,22 @@
-import { getFolderById, getFilesByFoldersId } from "../db/queries.js";
+import {
+  createFileQuery,
+  getFolderById,
+  getFilesByFoldersId,
+} from "../db/queries.js";
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
 
+const uploadMiddleware = upload.single("file");
+const createFile = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
+  const { id } = req.params;
+  const folderId = Number(id);
+  const { originalname, size, path } = req.file;
+  await createFileQuery(originalname, size, path, folderId);
+  res.redirect(`/folder/${id}/files`);
+};
 const getFiles = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
@@ -18,4 +35,4 @@ const getCreateFile = async (req, res) => {
   res.render("create-file", { user: req.user, id, name: "" });
 };
 
-export { getFiles, getCreateFile };
+export { createFile, getFiles, getCreateFile, uploadMiddleware };

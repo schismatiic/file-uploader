@@ -24,6 +24,16 @@ const createFolderQuery = async (name, usersId) => {
     },
   });
 };
+const createFileQuery = async (name, size, path, foldersId) => {
+  await prisma.files.create({
+    data: {
+      name,
+      size,
+      path,
+      foldersId,
+    },
+  });
+};
 const getUserById = async (id) => {
   const user = await prisma.users.findUnique({
     where: { id },
@@ -89,6 +99,7 @@ const deleteFolderQuery = async (id) => {
 export {
   createSignUpQuery,
   createFolderQuery,
+  createFileQuery,
   getUserById,
   getUsername,
   getEmail,

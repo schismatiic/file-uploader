@@ -37,6 +37,7 @@ model Files {
   name      String
   size      Int
   added     DateTime @default(now())
+  path      String
   folders   Folders  @relation(fields: [foldersId], references: [id])
   foldersId Int
 }
