@@ -25,7 +25,21 @@ const getFiles = async (req, res) => {
   const folderId = Number(id);
   const folder = await getFolderById(folderId);
   const files = await getFilesByFoldersId(folderId);
-  res.render("files", { user: req.user, files, folder, id });
+  const formattedFiles = files.map((file) => ({
+    ...file,
+    added: file.added
+      .toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(/\//g, "/")
+      .replace(", ", " - "),
+  }));
+  res.render("files", { user: req.user, files: formattedFiles, folder, id });
 };
 const getCreateFile = async (req, res) => {
   if (!req.user) {
