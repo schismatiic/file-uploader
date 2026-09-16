@@ -66,6 +66,12 @@ const getFolderById = async (id) => {
   });
   return folder;
 };
+const getFilesByFoldersId = async (foldersId) => {
+  const files = await prisma.files.findMany({
+    where: { foldersId },
+  });
+  return files;
+};
 const updateFolderQuery = async (id, name) => {
   await prisma.folders.update({
     where: { id },
@@ -89,6 +95,7 @@ export {
   getIdentifier,
   getFolders,
   getFolderById,
+  getFilesByFoldersId,
   updateFolderQuery,
   deleteFolderQuery,
 };

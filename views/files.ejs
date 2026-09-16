@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Монолит | Files</title>
+    <link rel="stylesheet" href="/output.css">
+    <link rel="icon" type="image/svg+xml" href="/icons/pyramid.svg">
+</head>
+
+<body class="flex flex-col min-h-screen bg-black text-white font-extralight">
+    <%- include('header', {user}) %>
+        <% if (user) { %>
+            <div class="flex justify-between items-center m-4 mt-6 mb-0">
+                <div class="flex items-center gap-2 border border-white/20 px-2 py-1 border-l-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-folder-open">
+                        <path
+                            d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
+                    </svg>
+                    <h3>
+                        <%= folder.name %>
+                    </h3>
+                </div>
+                <div>
+                    <a href="/folder/<%= id %>/files/create"
+                        class="inline-flex gap-2 text-sm items-center bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/95 active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-file-up">
+                            <path
+                                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                            <path d="M12 12v6" />
+                            <path d="m15 15-3-3-3 3" />
+                        </svg>
+                        <p>
+                            Upload file
+                        </p>
+                    </a>
+                </div>
+            </div>
+
+            <% } %>
+                <main class="flex flex-col flex-1 mt-2">
+                    <div class="p-4 m-4 border border-white/20">
+                        <% if (files.length!==0) { %>
+                            <ul class="flex flex-col h-100 overflow-y-auto">
+                                <% files.forEach(folder=> { %>
+                                    <li>
+                                        <p>Hello</p>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+
+                            <% } else {%>
+                                <p class="flex h-100 justify-center text-white/80">No files yet.</p>
+                                <% } %>
+                    </div>
+                </main>
+
+                <%- include('footer') %>
+</body>
+
+</html>

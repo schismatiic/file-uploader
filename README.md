@@ -36,6 +36,6 @@ The application uses server-side rendering with EJS and Tailwind CSS for the fro
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:schismatiic/file-uploader.git
 cd file-uploader
 ```
