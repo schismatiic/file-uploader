@@ -32,7 +32,7 @@
                 <main class="flex flex-col flex-1 mt-2">
                     <div class="p-4 m-4 border border-white/20">
                         <% if (folders.length!==0) { %>
-                            <ul class="flex flex-col max-h-100 gap-1 overflow-y-auto">
+                            <ul class="flex flex-col h-100 overflow-y-auto">
                                 <% folders.forEach(folder=> { %>
                                     <li>
                                         <%- include("folder-card", {id: folder.id, name: folder.name}) %>

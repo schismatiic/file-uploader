@@ -72,6 +72,14 @@ const updateFolderQuery = async (id, name) => {
     data: { name },
   });
 };
+const deleteFolderQuery = async (id) => {
+  await prisma.files.deleteMany({
+    where: { foldersId: id },
+  });
+  await prisma.folders.delete({
+    where: { id },
+  });
+};
 export {
   createSignUpQuery,
   createFolderQuery,
@@ -82,4 +90,5 @@ export {
   getFolders,
   getFolderById,
   updateFolderQuery,
+  deleteFolderQuery,
 };

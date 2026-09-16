@@ -2,6 +2,7 @@ import {
   createFolderQuery,
   getFolderById,
   updateFolderQuery,
+  deleteFolderQuery,
 } from "../db/queries.js";
 import { body, validationResult, matchedData } from "express-validator";
 
@@ -69,12 +70,19 @@ const updateFolder = async (req, res) => {
   await updateFolderQuery(folderId, name);
   res.redirect("/");
 };
+const deleteFolder = async (req, res) => {
+  const { id } = req.params;
+  const folderId = Number(id);
+  await deleteFolderQuery(folderId);
+  res.redirect("/");
+};
 
 export {
   createFolder,
   getCreateFolder,
   getUpdateFolder,
   updateFolder,
+  deleteFolder,
   validateCreateFolder,
   validateUpdateFolder,
 };
