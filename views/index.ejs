@@ -34,10 +34,8 @@
                         <% if (folders.length!==0) { %>
                             <ul class="flex flex-col h-100 overflow-y-auto">
                                 <% folders.forEach(folder=> { %>
-                                    <li>
-                                        <%- include("folder-card", {id: folder.id, name: folder.name}) %>
-                                    </li>
-                                    <% }); %>
+                                    <%- include("folder-card", {id: folder.id, name: folder.name}) %>
+                                        <% }); %>
 
                             </ul>
 

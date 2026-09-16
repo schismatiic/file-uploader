@@ -11,7 +11,15 @@
 
 <body class="flex flex-col min-h-screen bg-black text-white font-extralight">
     <%- include('header', {user}) %>
-        <h3 class="flex justify-center items-center gap-2 mt-4 text-2xl">
+        <a href="/folder/<%= id %>/files" class="flex items-center gap-2 mx-4 my-2 hover:underline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-chevron-left">
+                <path d="m15 18-6-6 6-6" />
+            </svg>
+            <p>Back</p>
+        </a>
+        <h3 class="flex justify-center items-center gap-2 mt-2 text-2xl">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-file-up">
