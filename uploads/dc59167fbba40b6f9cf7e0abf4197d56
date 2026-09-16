@@ -1,0 +1,390 @@
+# Inicializar un proyecto Node.js + Prisma 7 + PostgreSQL
+
+Guía rápida para comenzar un proyecto nuevo usando **JavaScript**, **Node.js**, **Prisma 7** y **PostgreSQL**.
+
+> Esta guía está pensada para seguir el flujo de Prisma 7 utilizado en The Odin Project.
+
+---
+
+## 1. Crear el proyecto Node.js
+
+```bash
+mkdir mi-proyecto
+cd mi-proyecto
+npm init -y
+```
+
+---
+
+## 2. Instalar Prisma y PostgreSQL
+
+Instalar las dependencias necesarias:
+
+```bash
+npm install prisma@7 @prisma/client@7 @prisma/adapter-pg pg dotenv
+```
+
+- `prisma`: CLI de Prisma.
+- `@prisma/client`: Prisma Client.
+- `@prisma/adapter-pg`: adapter para PostgreSQL en Prisma 7.
+- `pg`: driver de PostgreSQL.
+- `dotenv`: permite cargar `DATABASE_URL` desde `.env`.
+
+---
+
+## 3. Configurar el proyecto como ES Module
+
+En `package.json`, agregar:
+
+```json
+"type": "module"
+```
+
+Por ejemplo:
+
+```json
+{
+  "name": "mi-proyecto",
+  "version": "1.0.0",
+  "type": "module"
+}
+```
+
+Esto permite utilizar:
+
+```js
+import ...
+export ...
+```
+
+sin el warning de Node sobre `MODULE_TYPELESS_PACKAGE_JSON`.
+
+---
+
+## 4. Inicializar Prisma
+
+Ejecutar:
+
+```bash
+npx prisma init --datasource-provider postgresql --output ../generated/prisma --generator-provider prisma-client-js --no-skills
+```
+
+Esto crea, entre otras cosas:
+
+```text
+prisma/
+└── schema.prisma
+
+prisma7.config.ts
+.env
+.gitignore
+```
+
+---
+
+## 5. Renombrar la configuración a JavaScript
+
+Como estamos trabajando con JavaScript y no TypeScript:
+
+```bash
+mv prisma7.config.ts prisma7.config.js
+```
+
+Revisar que el archivo de configuración sea compatible con JavaScript.
+
+---
+
+## 6. Configurar la conexión a PostgreSQL
+
+En `.env`:
+
+```env
+DATABASE_URL="postgresql://USUARIO:CONTRASEÑA@localhost:5432/NOMBRE_BASE_DE_DATOS"
+```
+
+Ejemplo:
+
+```env
+DATABASE_URL="postgresql://postgres:mi_password@localhost:5432/mi_database"
+```
+
+**No subir `.env` a GitHub.**
+
+---
+
+## 7. Definir los modelos
+
+Editar:
+
+```text
+prisma/schema.prisma
+```
+
+Ejemplo:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String?
+}
+```
+
+Aquí se define la **estructura que queremos que tenga la base de datos**.
+
+---
+
+## 8. Crear la migración
+
+Cuando el schema esté listo:
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Esto:
+
+1. Compara el `schema.prisma` con la base de datos.
+2. Genera una migración SQL.
+3. Aplica los cambios a PostgreSQL.
+4. Guarda el historial de migraciones en:
+
+```text
+prisma/migrations/
+```
+
+### ¿Cuándo volver a hacer migrate?
+
+Cada vez que hagas cambios estructurales al `schema.prisma`.
+
+Por ejemplo, si agregas:
+
+```prisma
+name String?
+```
+
+puedes ejecutar:
+
+```bash
+npx prisma migrate dev --name add-user-name
+```
+
+---
+
+## 9. Generar Prisma Client
+
+Después de definir/modificar el schema:
+
+```bash
+npx prisma generate
+```
+
+Esto genera Prisma Client en:
+
+```text
+generated/prisma/
+```
+
+Gracias a esto podemos utilizar:
+
+```js
+prisma.user.findMany()
+prisma.user.create()
+prisma.user.update()
+prisma.user.delete()
+```
+
+---
+
+## 10. Crear `lib/prisma.js`
+
+Crear:
+
+```text
+lib/prisma.js
+```
+
+Con:
+
+```js
+import "dotenv/config";
+
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../generated/prisma/client.js";
+
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const adapter = new PrismaPg({ connectionString });
+
+const prisma = new PrismaClient({ adapter });
+
+export { prisma };
+```
+
+Este archivo centraliza la instancia de Prisma Client que utilizará la aplicación.
+
+---
+
+## 11. Utilizar Prisma
+
+Por ejemplo, en `script.js`:
+
+```js
+import { prisma } from "./lib/prisma.js";
+
+async function main() {
+  const users = await prisma.user.findMany();
+
+  console.log(users);
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+```
+
+Ejecutar:
+
+```bash
+node script.js
+```
+
+---
+
+# Resumen rápido
+
+Para un proyecto nuevo:
+
+```bash
+mkdir mi-proyecto
+cd mi-proyecto
+
+npm init -y
+
+npm install prisma@7 @prisma/client@7 @prisma/adapter-pg pg dotenv
+
+npx prisma init --datasource-provider postgresql --output ../generated/prisma --generator-provider prisma-client-js --no-skills
+
+mv prisma7.config.ts prisma7.config.js
+```
+
+Después:
+
+```text
+1. Agregar "type": "module" a package.json
+2. Configurar DATABASE_URL en .env
+3. Definir modelos en prisma/schema.prisma
+4. npx prisma migrate dev --name init
+5. npx prisma generate
+6. Crear lib/prisma.js
+7. Importar prisma donde sea necesario
+```
+
+---
+
+# Conceptos importantes
+
+### `schema.prisma`
+
+Define cómo queremos que sea nuestra base de datos.
+
+```text
+schema.prisma
+      ↓
+  estructura deseada
+```
+
+### `prisma migrate dev`
+
+Aplica los cambios del schema a PostgreSQL y crea un historial de migraciones.
+
+```text
+schema.prisma
+      ↓
+migrate dev
+      ↓
+PostgreSQL
+```
+
+### `prisma generate`
+
+Genera el Prisma Client que utilizamos desde JavaScript.
+
+```text
+schema.prisma
+      ↓
+prisma generate
+      ↓
+Prisma Client
+      ↓
+prisma.user.findMany()
+```
+
+### `lib/prisma.js`
+
+Crea y exporta la instancia de Prisma Client que utiliza nuestra aplicación.
+
+---
+
+## Comandos que usarás con frecuencia
+
+### Ver el estado de las migraciones
+
+```bash
+npx prisma migrate status
+```
+
+### Crear una nueva migración
+
+```bash
+npx prisma migrate dev --name nombre-del-cambio
+```
+
+### Regenerar Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### Abrir Prisma Studio
+
+```bash
+npx prisma studio
+```
+
+Prisma Studio permite visualizar y modificar los datos de la base de datos mediante una interfaz gráfica.
+
+---
+
+## Flujo mental
+
+Cada vez que cambies la estructura de tus datos:
+
+```text
+Cambias schema.prisma
+        ↓
+migrate dev
+        ↓
+PostgreSQL cambia
+        ↓
+prisma generate
+        ↓
+Prisma Client conoce los nuevos modelos
+```
+
+No es necesario ejecutar `migrate` después de cada consulta. **Las migraciones son para cambios en la estructura de la base de datos**, no para operaciones normales como crear, leer, actualizar o eliminar registros.

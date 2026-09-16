@@ -242,6 +242,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .table {
+    display: table;
+  }
   .h-100 {
     height: calc(var(--spacing) * 100);
   }
