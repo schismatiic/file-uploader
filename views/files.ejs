@@ -57,8 +57,8 @@
                         <% if (files.length!==0) { %>
                             <ul class="flex flex-col h-98 overflow-y-auto">
                                 <% files.forEach(file=> { %>
-                                    <%- include("file-card", {id, name: file.name, size: file.size, added: file.added})
-                                        %>
+                                    <%- include("file-card", {id, fileId: file.id ,name: file.name, size: file.size,
+                                        added: file.added}) %>
                                         <% }); %>
                             </ul>
 

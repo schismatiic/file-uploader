@@ -96,6 +96,11 @@ const deleteFolderQuery = async (id) => {
     where: { id },
   });
 };
+const deleteFileQuery = async (id) => {
+  await prisma.files.delete({
+    where: { id },
+  });
+};
 export {
   createSignUpQuery,
   createFolderQuery,
@@ -109,4 +114,5 @@ export {
   getFilesByFoldersId,
   updateFolderQuery,
   deleteFolderQuery,
+  deleteFileQuery,
 };

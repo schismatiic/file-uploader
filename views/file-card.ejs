@@ -1,6 +1,6 @@
 <li
     class="relative flex justify-between items-center border border-white/20 p-2 hover:bg-white/10 border-b-0 last:border">
-    <a class="flex justify-center min-w-0 flex-col w-full cursor-pointer" href="/folder/<%= id %>/files">
+    <a class="flex justify-center min-w-0 flex-col w-full cursor-pointer" href="/folder/<%= id %>/files/<%= fileId %>">
         <div class="flex items-center min-w-0 gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -13,10 +13,10 @@
                 <h3 class="font-extralight truncate">
                     <%= name %>
                 </h3>
-                <p class="text-sm text-white/70">
+                <p class="text-xs text-white/70">
                     <%= size %> KB
                 </p>
-                <p class="text-sm text-white/70">
+                <p class="text-xs text-white/70">
                     <%= added %>
                 </p>
             </div>
@@ -42,7 +42,7 @@
                 <path d="M10 14 21 3" />
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
             </svg>
-            <a href="/folder/<%= id %>">Open file</a>
+            <a href="/folder/<%= id %>/files/<%= fileId %>">Open file</a>
         </div>
         <div class="flex items-center gap-2 active:scale-95 cursor-pointer text-red-600 hover:text-red-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -54,7 +54,7 @@
                 <path d="m15 17 5 5" />
                 <path d="m20 17-5 5" />
             </svg>
-            <a href="/folder/delete/<%= id %>">Delete
+            <a href="/folder/<%= id %>/files/<%= fileId %>/delete">Delete
                 file</a>
         </div>
     </div>
