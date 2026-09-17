@@ -2,6 +2,7 @@ import {
   createFileQuery,
   getFolderById,
   getFilesByFoldersId,
+  deleteFileQuery,
 } from "../db/queries.js";
 import multer from "multer";
 const upload = multer({ dest: "uploads/" });
@@ -48,5 +49,15 @@ const getCreateFile = async (req, res) => {
   const { id } = req.params;
   res.render("create-file", { user: req.user, id, name: "" });
 };
-
-export { createFile, getFiles, getCreateFile, uploadMiddleware };
+const deleteFile = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
+  const { id } = req.params;
+  const folderId = Number(id);
+  const { fileId } = req.params;
+  const idFile = Number(fileId);
+  await deleteFileQuery(idFile);
+  res.redirect(`/folder/${folderId}/files`);
+};
+export { createFile, getFiles, getCreateFile, deleteFile, uploadMiddleware };
