@@ -82,6 +82,12 @@ const getFilesByFoldersId = async (foldersId) => {
   });
   return files;
 };
+const getFileById = async (id) => {
+  const file = await prisma.files.findUnique({
+    where: { id },
+  });
+  return file;
+};
 const updateFolderQuery = async (id, name) => {
   await prisma.folders.update({
     where: { id },
@@ -112,6 +118,7 @@ export {
   getFolders,
   getFolderById,
   getFilesByFoldersId,
+  getFileById,
   updateFolderQuery,
   deleteFolderQuery,
   deleteFileQuery,

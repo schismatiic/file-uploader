@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Монолит | Upload a file</title>
+    <title>Монолит | File details</title>
     <link rel="stylesheet" href="/output.css">
     <link rel="icon" type="image/svg+xml" href="/icons/pyramid.svg">
 </head>
@@ -22,45 +22,52 @@
         <h3 class="flex justify-center items-center gap-2 mt-2 text-2xl">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-file-up">
+                class="lucide lucide-file">
                 <path
                     d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
                 <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                <path d="M12 12v6" />
-                <path d="m15 15-3-3-3 3" />
             </svg>
-            <p>Upload a file</p>
+            <p>File details</p>
         </h3>
         <main class="flex flex-col flex-1 items-center">
-            <form class="flex flex-col w-full max-w-11/12 md:max-w-5/12 m-4 border border-white/20 p-4 gap-2"
-                action="/folder/<%= id %>/files/create" method="POST" enctype="multipart/form-data">
+            <div class="flex flex-col w-full max-w-11/12 md:max-w-5/12 m-4 border border-white/20 p-4 gap-2">
                 <div class="flex justify-center">
                     <div class="flex justify-center w-fit border border-white/20 p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-cloud-upload">
-                            <path d="M12 13v8" />
-                            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-                            <path d="m8 17 4-4 4 4" />
+                            class="lucide lucide-file-text">
+                            <path
+                                d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                            <path d="M10 9H8" />
+                            <path d="M16 13H8" />
+                            <path d="M16 17H8" />
                         </svg>
                     </div>
                 </div>
-                <input
-                    class="w-full border mt-2 border-white/20 p-2 file:border file:border-white/20 file:text-white  file:px-3 file:py-1 file:mr-3 file:cursor-pointer hover:file:bg-white/10"
-                    type="file" name="file" />
-                <button
-                    class="flex justify-center items-center gap-2 bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95 mt-2 w-full"
-                    type="submit">
+                <div>
+                    <p class="truncate">
+                        <%= name %>
+                    </p>
+                    <p class="text-sm text-white/70">
+                        <%= size %> KB
+                    </p>
+                    <p class="text-sm text-white/70">
+                        <%= added %>
+                    </p>
+                </div>
+                <a class="flex justify-center gap-2 items-center bg-white text-black px-2 py-1 cursor-pointer hover:bg-white/90 active:scale-95 mt-2 w-full"
+                    href="">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-upload">
-                        <path d="M12 3v12" />
-                        <path d="m17 8-5-5-5 5" />
+                        class="lucide lucide-download">
+                        <path d="M12 15V3" />
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <path d="m7 10 5 5 5-5" />
                     </svg>
-                    <p>Upload</p>
-                </button>
-            </form>
+                    <p>Download</p>
+                </a>
+            </div>
             <% if (locals.errors) {%>
                 <ul class="m-4 border border-white/20 p-4 w-fit">
                     <% errors.forEach(function(error) { %>
