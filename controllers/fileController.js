@@ -2,6 +2,7 @@ import {
   createFileQuery,
   getFolderById,
   getFilesByFoldersId,
+  getFileById,
   deleteFileQuery,
 } from "../db/queries.js";
 import multer from "multer";
@@ -49,6 +50,30 @@ const getCreateFile = async (req, res) => {
   const { id } = req.params;
   res.render("create-file", { user: req.user, id, name: "" });
 };
+const getFile = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
+  const { id, fileId } = req.params;
+  const idFile = Number(fileId);
+  const file = await getFileById(idFile);
+  const { name, size, added } = {
+    ...file,
+    added: file.added
+      .toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(/\//g, "/")
+      .replace(", ", " - "),
+  };
+
+  res.render("file-details", { user: req.user, name, size, added, id });
+};
 const deleteFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
@@ -60,4 +85,11 @@ const deleteFile = async (req, res) => {
   await deleteFileQuery(idFile);
   res.redirect(`/folder/${folderId}/files`);
 };
-export { createFile, getFiles, getCreateFile, deleteFile, uploadMiddleware };
+export {
+  createFile,
+  getFiles,
+  getCreateFile,
+  getFile,
+  deleteFile,
+  uploadMiddleware,
+};
