@@ -6,16 +6,31 @@ import {
   deleteFileQuery,
 } from "../db/queries.js";
 import multer from "multer";
-const upload = multer({ dest: "uploads/" });
+import { body, validationResult, matchedData } from "express-validator";
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 16 * 1024 * 1024 },
+});
 
+const validateUpload = [
+  file("file").notEmpty().withMessage("File is required"),
+];
 const uploadMiddleware = upload.single("file");
 const createFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
   const { id } = req.params;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("create-file", {
+      errors: errors.array(),
+      user: req.user,
+      id,
+    });
+  }
   const folderId = Number(id);
-  const { originalname, size, path } = req.file;
+  const { originalname, size, path } = matchedData(req);
   await createFileQuery(originalname, size, path, folderId);
   res.redirect(`/folder/${id}/files`);
 };
@@ -48,7 +63,7 @@ const getCreateFile = async (req, res) => {
     return res.redirect("/auth/log-in");
   }
   const { id } = req.params;
-  res.render("create-file", { user: req.user, id, name: "" });
+  res.render("create-file", { user: req.user, id });
 };
 const getFile = async (req, res) => {
   if (!req.user) {
@@ -101,4 +116,5 @@ export {
   getDownloadFile,
   deleteFile,
   uploadMiddleware,
+  validateUpload,
 };
