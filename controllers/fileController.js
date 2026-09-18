@@ -72,7 +72,15 @@ const getFile = async (req, res) => {
       .replace(", ", " - "),
   };
 
-  res.render("file-details", { user: req.user, name, size, added, id });
+  res.render("file-details", { user: req.user, name, size, added, id, fileId });
+};
+const getDownloadFile = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("/auth/log-in");
+  }
+  const { fileId } = req.params;
+  const { path } = await getFileById(Number(fileId));
+  res.download(path);
 };
 const deleteFile = async (req, res) => {
   if (!req.user) {
@@ -90,6 +98,7 @@ export {
   getFiles,
   getCreateFile,
   getFile,
+  getDownloadFile,
   deleteFile,
   uploadMiddleware,
 };
