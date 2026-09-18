@@ -7,12 +7,13 @@ import {
   getDownloadFile,
   deleteFile,
   uploadMiddleware,
+  validateUpload,
 } from "../controllers/fileController.js";
 const fileRouter = Router({ mergeParams: true });
 
 fileRouter.get("/", getFiles);
 fileRouter.get("/create", getCreateFile);
-fileRouter.post("/create", uploadMiddleware, createFile);
+fileRouter.post("/create", uploadMiddleware, validateUpload, createFile);
 fileRouter.get("/:fileId", getFile);
 fileRouter.get("/:fileId/delete", deleteFile);
 fileRouter.get("/:fileId/download", getDownloadFile);
