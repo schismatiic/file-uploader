@@ -12,9 +12,16 @@ const upload = multer({
   limits: { fileSize: 16 * 1024 * 1024 },
 });
 
-const validateUpload = [
-  file("file").notEmpty().withMessage("File is required"),
-];
+const validateUpload = (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).render("create-file", {
+      errors: [{ msg: "File is required" }],
+      user: req.user,
+      id: req.params.id,
+    });
+  }
+  next();
+};
 const uploadMiddleware = upload.single("file");
 const createFile = async (req, res) => {
   if (!req.user) {
