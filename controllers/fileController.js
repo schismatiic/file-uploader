@@ -6,11 +6,14 @@ import {
   deleteFileQuery,
 } from "../db/queries.js";
 import multer from "multer";
-import { body, validationResult, matchedData } from "express-validator";
+import fs from "node:fs";
+import crypto from "node:crypto";
+import { validationResult } from "express-validator";
 const upload = multer({
   dest: "uploads/",
   limits: { fileSize: 16 * 1024 * 1024 },
 });
+import { supabase } from "../lib/supabase.js";
 
 const validateUpload = (req, res, next) => {
   if (!req.file) {
@@ -27,6 +30,7 @@ const createFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
+  const storagePath = crypto.randomUUID();
   const { id } = req.params;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -37,8 +41,18 @@ const createFile = async (req, res) => {
     });
   }
   const folderId = Number(id);
-  const { originalname, size, path } = matchedData(req);
-  await createFileQuery(originalname, size, path, folderId);
+  const { originalname, size, path } = req.file;
+  const fileBuffer = await fs.promises.readFile(path);
+  const { data, error } = await supabase.storage
+    .from("files")
+    .upload(storagePath, fileBuffer, {
+      contentType: req.file.mimetype,
+    });
+  if (error) {
+    console.error(error);
+    return res.status(500).send("Error uploading file");
+  }
+  await createFileQuery(originalname, size, data.path, folderId);
   res.redirect(`/folder/${id}/files`);
 };
 const getFiles = async (req, res) => {
@@ -93,16 +107,22 @@ const getFile = async (req, res) => {
       .replace(/\//g, "/")
       .replace(", ", " - "),
   };
-
   res.render("file-details", { user: req.user, name, size, added, id, fileId });
 };
 const getDownloadFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
+
   const { fileId } = req.params;
   const { path } = await getFileById(Number(fileId));
-  res.download(path);
+  const { data, error } = await supabase.storage.from("files").download(path);
+  if (error) {
+    console.error(error);
+    return res.status(500).send("Error downloading file");
+  }
+  const buffer = Buffer.from(await data.arrayBuffer());
+  res.send(buffer);
 };
 const deleteFile = async (req, res) => {
   if (!req.user) {
