@@ -86,7 +86,11 @@ const deleteFolder = async (req, res) => {
   }
   const { id } = req.params;
   const folderId = Number(id);
-  await deleteFolderQuery(folderId);
+  const user = req.user;
+  const folder = await deleteFolderQuery(user.id, folderId);
+  if (!folder) {
+    return res.status(404).send("Folder not found");
+  }
   res.redirect("/");
 };
 

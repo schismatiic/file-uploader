@@ -73,7 +73,7 @@ const getFolders = async (usersId) => {
   return folders;
 };
 const getFolderById = async (usersId, id) => {
-  const folder = await prisma.folders.findUnique({
+  const folder = await prisma.folders.findFirst({
     where: { id, usersId },
   });
   return folder;
@@ -115,16 +115,36 @@ const updateFolderQuery = async (usersId, id, name) => {
     data: { name },
   });
 };
-const deleteFolderQuery = async (id) => {
+const deleteFolderQuery = async (usersId, id) => {
+  const folder = await prisma.folders.findFirst({
+    where: {
+      id,
+      usersId,
+    },
+  });
+  if (!folder) {
+    return null;
+  }
   await prisma.files.deleteMany({
     where: { foldersId: id },
   });
-  await prisma.folders.delete({
+  return await prisma.folders.delete({
     where: { id },
   });
 };
-const deleteFileQuery = async (id) => {
-  await prisma.files.delete({
+const deleteFileQuery = async (usersId, id) => {
+  const file = await prisma.files.findFirst({
+    where: {
+      id,
+      folders: {
+        usersId,
+      },
+    },
+  });
+  if (!file) {
+    return null;
+  }
+  return await prisma.files.delete({
     where: { id },
   });
 };

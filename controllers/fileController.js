@@ -139,10 +139,14 @@ const deleteFile = async (req, res) => {
     return res.redirect("/auth/log-in");
   }
   const { id } = req.params;
+  const user = req.user;
   const folderId = Number(id);
   const { fileId } = req.params;
   const idFile = Number(fileId);
-  await deleteFileQuery(idFile);
+  const file = await deleteFileQuery(user.id, idFile);
+  if (!file) {
+    return res.status(404).send("File not found");
+  }
   res.redirect(`/folder/${folderId}/files`);
 };
 export {
