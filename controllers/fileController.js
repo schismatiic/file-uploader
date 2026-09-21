@@ -124,13 +124,14 @@ const getDownloadFile = async (req, res) => {
   if (!file) {
     return res.status(404).send("File not found");
   }
-  const { path } = file;
+  const { name, path } = file;
   const { data, error } = await supabase.storage.from("files").download(path);
   if (error) {
     console.error(error);
     return res.status(500).send("Error downloading file");
   }
   const buffer = Buffer.from(await data.arrayBuffer());
+  res.attachment(name);
   res.send(buffer);
 };
 const deleteFile = async (req, res) => {
