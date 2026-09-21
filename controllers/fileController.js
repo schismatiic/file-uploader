@@ -59,10 +59,11 @@ const getFiles = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
+  const user = req.user;
   const { id } = req.params;
   const folderId = Number(id);
-  const folder = await getFolderById(folderId);
-  const files = await getFilesByFoldersId(folderId);
+  const folder = await getFolderById(user.id, folderId);
+  const files = await getFilesByFoldersId(user.id, folderId);
   const formattedFiles = files.map((file) => ({
     ...file,
     added: file.added
@@ -90,9 +91,13 @@ const getFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
+  const user = req.user;
   const { id, fileId } = req.params;
   const idFile = Number(fileId);
-  const file = await getFileById(idFile);
+  const file = await getFileById(user.id, idFile);
+  if (!file) {
+    return res.status(404).send("File not found");
+  }
   const { name, size, added } = {
     ...file,
     added: file.added
@@ -113,9 +118,13 @@ const getDownloadFile = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
-
+  const user = req.user;
   const { fileId } = req.params;
-  const { path } = await getFileById(Number(fileId));
+  const file = await getFileById(user.id, Number(fileId));
+  if (!file) {
+    return res.status(404).send("File not found");
+  }
+  const { path } = file;
   const { data, error } = await supabase.storage.from("files").download(path);
   if (error) {
     console.error(error);

@@ -66,30 +66,51 @@ const getIdentifier = async (identifier) => {
   });
   return user;
 };
-const getFolders = async () => {
-  const folders = await prisma.folders.findMany();
+const getFolders = async (usersId) => {
+  const folders = await prisma.folders.findMany({
+    where: { usersId },
+  });
   return folders;
 };
-const getFolderById = async (id) => {
+const getFolderById = async (usersId, id) => {
   const folder = await prisma.folders.findUnique({
-    where: { id },
+    where: { id, usersId },
   });
   return folder;
 };
-const getFilesByFoldersId = async (foldersId) => {
+const getFilesByFoldersId = async (usersId, foldersId) => {
   const files = await prisma.files.findMany({
-    where: { foldersId },
+    where: {
+      foldersId,
+      folders: {
+        usersId,
+      },
+    },
   });
   return files;
 };
-const getFileById = async (id) => {
-  const file = await prisma.files.findUnique({
-    where: { id },
+const getFileById = async (usersId, id) => {
+  const file = await prisma.files.findFirst({
+    where: {
+      id,
+      folders: {
+        usersId,
+      },
+    },
   });
   return file;
 };
-const updateFolderQuery = async (id, name) => {
-  await prisma.folders.update({
+const updateFolderQuery = async (usersId, id, name) => {
+  const folder = await prisma.folders.findFirst({
+    where: {
+      id,
+      usersId,
+    },
+  });
+  if (!folder) {
+    return null;
+  }
+  return await prisma.folders.update({
     where: { id },
     data: { name },
   });

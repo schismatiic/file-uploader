@@ -64,6 +64,7 @@ const updateFolder = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
+  const user = req.user;
   const { id } = req.params;
   const folderId = Number(id);
   const folder = req.body;
@@ -76,7 +77,7 @@ const updateFolder = async (req, res) => {
     });
   }
   const { name } = matchedData(req);
-  await updateFolderQuery(folderId, name);
+  await updateFolderQuery(user.id, folderId, name);
   res.redirect("/");
 };
 const deleteFolder = async (req, res) => {

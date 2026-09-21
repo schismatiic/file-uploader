@@ -3,7 +3,8 @@ const getIndex = async (req, res) => {
   if (!req.user) {
     return res.redirect("/auth/log-in");
   }
-  const folders = await getFolders();
+  const { id } = req.user;
+  const folders = await getFolders(id);
   res.render("index", { user: req.user, folders });
 };
 
